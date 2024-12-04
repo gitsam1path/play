@@ -1,0 +1,46 @@
+#!/bin/bash
+# on definit les var en dur car on lance en ssh de la pic (utilise aussi dans les peu)
+echo '----------------- arret play'
+APPLI_CODE=mce
+APPLI_COMP=/appli/${APPLI_CODE}/comp
+APPLI_TMP=/appli/${APPLI_CODE}/tmp
+APPLI_LOG=/appli/${APPLI_CODE}/var/log
+CA_PATH=${APPLI_COMP}/java/${APPLI_CODE}
+echo log=${APPLI_LOG}/arret_play.log
+echo CA_PATH=${CA_PATH}
+echo '--------------- arret play'>> ${APPLI_LOG}/arret_play.log
+date +%D-%T>> ${APPLI_LOG}/arret_play.log
+
+# pour recuperer le pid...
+x=0 liste=`ps auxwww| grep PLAY_PID | grep "^${APPLI_CODE} " | grep java`; for i in $liste; do let x=$x+1; if [ $x -eq 2 ]; then APPLI_PLAY_PID=$i; fi;done
+#APPLI_PLAY_PID=$(cat ${APPLI_TMP}/PLAY_PID)
+echo "Play PID : ${APPLI_PLAY_PID}"
+if [ "${APPLI_PLAY_PID}" = "" ]; then
+        echo "[Erreur] Process non trouve..."
+        echo "[Erreur] Instance ${APPLI_CODE} Play non demarree..."
+        exit 1
+fi
+
+[[ -f "${APPLI_TMP}/PLAY_PID" ]] && rm "${APPLI_TMP}/PLAY_PID"
+echo "Arret de Play..."
+echo "Kill du process "${APPLI_PLAY_PID}
+kill ${APPLI_PLAY_PID}
+
+RET=$?
+if [ $RET -ne 0 ]; then
+        kill -9 ${APPLI_PLAY_PID}
+        RET=$?
+        if [ $RET -ne 0 ]; then
+                echo "---------------------------------------------------------------------"
+                echo "[Erreur]: Echec de l arret force !!!"
+                echo "[Erreur]: kill a renvoye l'erreur "$RET
+                echo "---------------------------------------------------------------------"
+                exit $RET
+        else
+                echo "Succes de l arret force"
+                exit $RET
+        fi
+else
+        echo "Succes de l arret"
+        exit $RET
+fi

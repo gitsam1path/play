@@ -1,0 +1,29 @@
+#!/bin/bash
+# on definit les var en dur car on lance en ssh de la pic (utilise aussi dans les peu)
+echo '----------------- dem play'
+APPLI_CODE=mce
+APPLI_COMP=/appli/${APPLI_CODE}/comp
+APPLI_LOG=/appli/${APPLI_CODE}/var/log
+APPLI_CONFIG=${APPLI_PARAM}/environnement_dev.conf
+
+CA_PATH=${APPLI_COMP}/java/${APPLI_CODE}
+echo '--------------- dem play'>> ${APPLI_LOG}/dem_play.log
+echo CA_PATH=${CA_PATH}>> ${APPLI_LOG}/dem_play.log
+date +%D-%T>> ${APPLI_LOG}/dem_play.log
+
+# pour recuperer le pid...
+x=0 liste=`ps auxwww| grep NettyServer | grep "^${APPLI_CODE} " | grep java`; for i in $liste; do let x=$x+1; if [ $x -eq 2 ]; then APPLI_PLAY_PID=$i; fi;done
+
+if [ "${APPLI_PLAY_PID}" != "" ]; then
+        echo APPLI_PLAY_PID=${APPLI_PLAY_PID}>>  ${APPLI_LOG}/dem_play.log
+        echo "[Erreur] Instance ${APPLI_CODE} Play deja demarree..."
+        exit 1
+fi
+
+# pour que les dump dans les cas de out of memory
+# ne soit pas generes n'importe ou
+cd  ${APPLI_LOG} >>  ${APPLI_LOG}/dem_play.log 2>&1
+
+${CA_PATH}/bin/${APPLI_CODE} -Dpidfile.path=${APPLI_TMP}/PLAY_PID -Dlogger.file=${APPLI_PARAM}/logger.xml -Dconfig.file=${APPLI_PARAM}/application_dev.conf -DapplyDownEvolutions.default=true -DapplyEvolutions.default=true &
+
+exit 0

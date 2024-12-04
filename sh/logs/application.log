@@ -1,0 +1,510 @@
+2014-06-06 11:32:27,993 - [INFO] - from play in main 
+datasource [jdbc:postgresql://localhost:5432/mce] bound to JNDI as LcbDS
+
+2014-06-06 11:32:28,092 - [INFO] - from play in main 
+database [default] connected at jdbc:postgresql://localhost:5432/mce
+
+2014-06-06 11:32:28,626 - [INFO] - from play in main 
+Application started (Prod)
+
+2014-06-06 11:40:55,340 - [INFO] - from play in main 
+datasource [jdbc:postgresql://localhost:5432/mce] bound to JNDI as LcbDS
+
+2014-06-06 11:40:55,428 - [INFO] - from play in main 
+database [default] connected at jdbc:postgresql://localhost:5432/mce
+
+2014-06-06 11:40:55,990 - [INFO] - from play in main 
+Application started (Prod)
+
+2014-06-06 11:42:01,788 - [INFO] - from play in main 
+datasource [jdbc:postgresql://localhost:5432/mce] bound to JNDI as LcbDS
+
+2014-06-06 11:42:01,875 - [INFO] - from play in main 
+database [default] connected at jdbc:postgresql://localhost:5432/mce
+
+2014-06-06 11:42:02,428 - [INFO] - from play in main 
+Application started (Prod)
+
+2014-06-06 11:42:36,498 - [INFO] - from play in main 
+datasource [jdbc:postgresql://localhost:5432/mce] bound to JNDI as LcbDS
+
+2014-06-06 11:42:36,589 - [INFO] - from play in main 
+database [default] connected at jdbc:postgresql://localhost:5432/mce
+
+2014-06-06 11:42:37,167 - [INFO] - from play in main 
+Application started (Prod)
+
+2014-06-06 11:43:25,883 - [INFO] - from play in main 
+datasource [jdbc:postgresql://localhost:5432/mce] bound to JNDI as LcbDS
+
+2014-06-06 11:43:25,970 - [INFO] - from play in main 
+database [default] connected at jdbc:postgresql://localhost:5432/mce
+
+2014-06-06 11:43:26,511 - [INFO] - from play in main 
+Application started (Prod)
+
+2014-06-06 11:43:34,833 - [INFO] - from play in main 
+datasource [jdbc:postgresql://localhost:5432/mce] bound to JNDI as LcbDS
+
+2014-06-06 11:43:34,923 - [INFO] - from play in main 
+database [default] connected at jdbc:postgresql://localhost:5432/mce
+
+2014-06-06 11:43:35,470 - [INFO] - from play in main 
+Application started (Prod)
+
+2014-06-06 11:47:41,290 - [INFO] - from play in main 
+datasource [jdbc:postgresql://localhost:5432/mce] bound to JNDI as LcbDS
+
+2014-06-06 11:47:41,377 - [INFO] - from play in main 
+database [default] connected at jdbc:postgresql://localhost:5432/mce
+
+2014-06-06 11:47:41,925 - [INFO] - from play in main 
+Application started (Prod)
+
+2014-06-06 11:50:51,419 - [INFO] - from play in main 
+datasource [jdbc:postgresql://localhost:5432/mce] bound to JNDI as LcbDS
+
+2014-06-06 11:50:51,517 - [INFO] - from play in main 
+database [default] connected at jdbc:postgresql://localhost:5432/mce
+
+2014-06-06 11:50:52,100 - [INFO] - from play in main 
+Application started (Prod)
+
+2014-06-06 11:52:39,627 - [INFO] - from play in main 
+datasource [jdbc:postgresql://localhost:5432/mce] bound to JNDI as LcbDS
+
+2014-06-06 11:52:39,723 - [INFO] - from play in main 
+database [default] connected at jdbc:postgresql://localhost:5432/mce
+
+2014-06-06 11:52:40,275 - [INFO] - from play in main 
+Application started (Prod)
+
+2014-06-06 11:53:15,824 - [INFO] - from play in main 
+datasource [jdbc:postgresql://localhost:5432/mce] bound to JNDI as LcbDS
+
+2014-06-06 11:53:15,913 - [INFO] - from play in main 
+database [default] connected at jdbc:postgresql://localhost:5432/mce
+
+2014-06-06 11:53:16,308 - [WARN] - from play in main 
+Your production database [default] needs evolutions, including downs! 
+
+# !!! WARNING! This script contains DOWNS evolutions that are likely destructives
+
+# --- Rev:1,Downs - 5a5df25
+drop table if exists agent cascade;
+
+drop table if exists consigne cascade;
+
+drop table if exists directive cascade;
+
+drop table if exists effectif cascade;
+
+drop table if exists indispo cascade;
+
+drop table if exists mission cascade;
+
+drop table if exists parametre cascade;
+
+drop table if exists secteur cascade;
+
+drop table if exists service cascade;
+
+drop table if exists utilisateur cascade;
+
+drop sequence if exists agent_seq;
+
+drop sequence if exists consigne_seq;
+
+drop sequence if exists directive_seq;
+
+drop sequence if exists effectif_seq;
+
+drop sequence if exists indispo_seq;
+
+drop sequence if exists mission_seq;
+
+drop sequence if exists parametre_seq;
+
+drop sequence if exists secteur_seq;
+
+drop sequence if exists service_seq;
+
+drop sequence if exists utilisateur_seq;
+
+# --- Rev:1,Ups - 3ffebe9
+create table agent (
+compte_matriculaire       varchar(15) not null,
+nom                       varchar(255),
+prenom                    varchar(255),
+civilite                  varchar(255),
+email                     varchar(255),
+tel                       varchar(255),
+structure_metier_nom      varchar(255),
+categorie                 varchar(255),
+statut                    varchar(255),
+fax                       varchar(255),
+purge_date                timestamp,
+constraint pk_agent primary key (compte_matriculaire))
+;
+
+create table consigne (
+id                        bigint not null,
+deleted_at                timestamp,
+is_deleted                boolean,
+date_creation             timestamp,
+createur_id               bigint,
+type_information          varchar(255),
+description               varchar(255),
+urgence                   varchar(255),
+created_at                timestamp not null,
+updated_at                timestamp not null,
+constraint pk_consigne primary key (id))
+;
+
+create table directive (
+id                        bigint not null,
+id_consigne               bigint not null,
+deleted_at                timestamp,
+is_deleted                boolean,
+date_creation             timestamp,
+date_fin_dir              timestamp,
+createur_id               bigint,
+type_information          varchar(255),
+description               varchar(255),
+urgence                   varchar(255),
+created_at                timestamp not null,
+updated_at                timestamp not null)
+;
+
+create table effectif (
+id                        bigint not null,
+deleted_at                timestamp,
+is_deleted                boolean,
+ligne                     varchar(255),
+secteur                   varchar(255),
+station                   varchar(255),
+mission                   varchar(255),
+compte_matriculaire       varchar(255),
+date_du_jour              timestamp,
+position                  varchar(255),
+created_at                timestamp not null,
+updated_at                timestamp not null,
+constraint pk_effectif primary key (id))
+;
+
+create table indispo (
+id                        bigint not null,
+id_indispo                bigint not null,
+deleted_at                timestamp,
+is_deleted                boolean,
+date_appel                timestamp,
+date_debut_indispo        timestamp,
+date_fin_indispo          timestamp,
+date_re_integrationo      timestamp,
+commentaires              varchar(255),
+type_indispo              varchar(255),
+created_at                timestamp not null,
+updated_at                timestamp not null)
+;
+
+create table parametre (
+id                        bigint not null,
+message                   varchar(255),
+msg_infos                 varchar(255),
+msg_alerte                varchar(255),
+tel                       varchar(255),
+fax                       varchar(255),
+mail                      varchar(255),
+constraint pk_parametre primary key (id))
+;
+
+create table secteur (
+id                        bigint not null,
+id_secteur                bigint not null,
+deleted_at                timestamp,
+is_deleted                boolean,
+ligne                     varchar(255),
+nom_secteur               varchar(255),
+created_at                timestamp not null,
+updated_at                timestamp not null)
+;
+
+create table service (
+id                        bigint not null,
+id_service                bigint not null,
+deleted_at                timestamp,
+is_deleted                boolean,
+date_debut                timestamp,
+date_fin                  timestamp,
+libelle_station           varchar(255),
+service                   varchar(255),
+utilisateur_id            bigint,
+created_at                timestamp not null,
+updated_at                timestamp not null)
+;
+
+create table utilisateur (
+id                        bigint not null,
+deleted_at                timestamp,
+is_deleted                boolean,
+agent_compte_matriculaire varchar(15),
+tel_secondaire            varchar(255),
+actif                     boolean,
+deactivated_at            timestamp,
+profil                    varchar(5),
+created_at                timestamp not null,
+updated_at                timestamp not null,
+constraint ck_utilisateur_profil check (profil in ('USER','ADMIN')),
+constraint pk_utilisateur primary key (id))
+;
+
+create sequence agent_seq;
+
+create sequence consigne_seq;
+
+create sequence directive_seq;
+
+create sequence effectif_seq;
+
+create sequence indispo_seq;
+
+create sequence parametre_seq;
+
+create sequence secteur_seq;
+
+create sequence service_seq;
+
+create sequence utilisateur_seq;
+
+alter table consigne add constraint fk_consigne_createur_1 foreign key (createur_id) references utilisateur (id);
+create index ix_consigne_createur_1 on consigne (createur_id);
+alter table directive add constraint fk_directive_createur_2 foreign key (createur_id) references utilisateur (id);
+create index ix_directive_createur_2 on directive (createur_id);
+alter table service add constraint fk_service_utilisateur_3 foreign key (utilisateur_id) references utilisateur (id);
+create index ix_service_utilisateur_3 on service (utilisateur_id);
+alter table utilisateur add constraint fk_utilisateur_agent_4 foreign key (agent_compte_matriculaire) references agent (compte_matriculaire);
+create index ix_utilisateur_agent_4 on utilisateur (agent_compte_matriculaire);
+
+
+2014-06-06 11:53:16,309 - [WARN] - from play in main 
+Run with -DapplyEvolutions.default=true and -DapplyDownEvolutions.default=true if you want to run them automatically, including downs (be careful, especially if your down evolutions drop existing data)
+
+2014-06-06 11:53:25,141 - [INFO] - from play in main 
+datasource [jdbc:postgresql://localhost:5432/mce] bound to JNDI as LcbDS
+
+2014-06-06 11:53:25,237 - [INFO] - from play in main 
+database [default] connected at jdbc:postgresql://localhost:5432/mce
+
+2014-06-06 11:53:25,630 - [WARN] - from play in main 
+Your production database [default] needs evolutions, including downs! 
+
+# !!! WARNING! This script contains DOWNS evolutions that are likely destructives
+
+# --- Rev:1,Downs - 5a5df25
+drop table if exists agent cascade;
+
+drop table if exists consigne cascade;
+
+drop table if exists directive cascade;
+
+drop table if exists effectif cascade;
+
+drop table if exists indispo cascade;
+
+drop table if exists mission cascade;
+
+drop table if exists parametre cascade;
+
+drop table if exists secteur cascade;
+
+drop table if exists service cascade;
+
+drop table if exists utilisateur cascade;
+
+drop sequence if exists agent_seq;
+
+drop sequence if exists consigne_seq;
+
+drop sequence if exists directive_seq;
+
+drop sequence if exists effectif_seq;
+
+drop sequence if exists indispo_seq;
+
+drop sequence if exists mission_seq;
+
+drop sequence if exists parametre_seq;
+
+drop sequence if exists secteur_seq;
+
+drop sequence if exists service_seq;
+
+drop sequence if exists utilisateur_seq;
+
+# --- Rev:1,Ups - 3ffebe9
+create table agent (
+compte_matriculaire       varchar(15) not null,
+nom                       varchar(255),
+prenom                    varchar(255),
+civilite                  varchar(255),
+email                     varchar(255),
+tel                       varchar(255),
+structure_metier_nom      varchar(255),
+categorie                 varchar(255),
+statut                    varchar(255),
+fax                       varchar(255),
+purge_date                timestamp,
+constraint pk_agent primary key (compte_matriculaire))
+;
+
+create table consigne (
+id                        bigint not null,
+deleted_at                timestamp,
+is_deleted                boolean,
+date_creation             timestamp,
+createur_id               bigint,
+type_information          varchar(255),
+description               varchar(255),
+urgence                   varchar(255),
+created_at                timestamp not null,
+updated_at                timestamp not null,
+constraint pk_consigne primary key (id))
+;
+
+create table directive (
+id                        bigint not null,
+id_consigne               bigint not null,
+deleted_at                timestamp,
+is_deleted                boolean,
+date_creation             timestamp,
+date_fin_dir              timestamp,
+createur_id               bigint,
+type_information          varchar(255),
+description               varchar(255),
+urgence                   varchar(255),
+created_at                timestamp not null,
+updated_at                timestamp not null)
+;
+
+create table effectif (
+id                        bigint not null,
+deleted_at                timestamp,
+is_deleted                boolean,
+ligne                     varchar(255),
+secteur                   varchar(255),
+station                   varchar(255),
+mission                   varchar(255),
+compte_matriculaire       varchar(255),
+date_du_jour              timestamp,
+position                  varchar(255),
+created_at                timestamp not null,
+updated_at                timestamp not null,
+constraint pk_effectif primary key (id))
+;
+
+create table indispo (
+id                        bigint not null,
+id_indispo                bigint not null,
+deleted_at                timestamp,
+is_deleted                boolean,
+date_appel                timestamp,
+date_debut_indispo        timestamp,
+date_fin_indispo          timestamp,
+date_re_integrationo      timestamp,
+commentaires              varchar(255),
+type_indispo              varchar(255),
+created_at                timestamp not null,
+updated_at                timestamp not null)
+;
+
+create table parametre (
+id                        bigint not null,
+message                   varchar(255),
+msg_infos                 varchar(255),
+msg_alerte                varchar(255),
+tel                       varchar(255),
+fax                       varchar(255),
+mail                      varchar(255),
+constraint pk_parametre primary key (id))
+;
+
+create table secteur (
+id                        bigint not null,
+id_secteur                bigint not null,
+deleted_at                timestamp,
+is_deleted                boolean,
+ligne                     varchar(255),
+nom_secteur               varchar(255),
+created_at                timestamp not null,
+updated_at                timestamp not null)
+;
+
+create table service (
+id                        bigint not null,
+id_service                bigint not null,
+deleted_at                timestamp,
+is_deleted                boolean,
+date_debut                timestamp,
+date_fin                  timestamp,
+libelle_station           varchar(255),
+service                   varchar(255),
+utilisateur_id            bigint,
+created_at                timestamp not null,
+updated_at                timestamp not null)
+;
+
+create table utilisateur (
+id                        bigint not null,
+deleted_at                timestamp,
+is_deleted                boolean,
+agent_compte_matriculaire varchar(15),
+tel_secondaire            varchar(255),
+actif                     boolean,
+deactivated_at            timestamp,
+profil                    varchar(5),
+created_at                timestamp not null,
+updated_at                timestamp not null,
+constraint ck_utilisateur_profil check (profil in ('USER','ADMIN')),
+constraint pk_utilisateur primary key (id))
+;
+
+create sequence agent_seq;
+
+create sequence consigne_seq;
+
+create sequence directive_seq;
+
+create sequence effectif_seq;
+
+create sequence indispo_seq;
+
+create sequence parametre_seq;
+
+create sequence secteur_seq;
+
+create sequence service_seq;
+
+create sequence utilisateur_seq;
+
+alter table consigne add constraint fk_consigne_createur_1 foreign key (createur_id) references utilisateur (id);
+create index ix_consigne_createur_1 on consigne (createur_id);
+alter table directive add constraint fk_directive_createur_2 foreign key (createur_id) references utilisateur (id);
+create index ix_directive_createur_2 on directive (createur_id);
+alter table service add constraint fk_service_utilisateur_3 foreign key (utilisateur_id) references utilisateur (id);
+create index ix_service_utilisateur_3 on service (utilisateur_id);
+alter table utilisateur add constraint fk_utilisateur_agent_4 foreign key (agent_compte_matriculaire) references agent (compte_matriculaire);
+create index ix_utilisateur_agent_4 on utilisateur (agent_compte_matriculaire);
+
+
+2014-06-06 11:53:25,631 - [WARN] - from play in main 
+Run with -DapplyEvolutions.default=true and -DapplyDownEvolutions.default=true if you want to run them automatically, including downs (be careful, especially if your down evolutions drop existing data)
+
+2014-06-06 11:53:42,551 - [INFO] - from play in main 
+datasource [jdbc:postgresql://localhost:5432/mce] bound to JNDI as LcbDS
+
+2014-06-06 11:53:42,648 - [INFO] - from play in main 
+database [default] connected at jdbc:postgresql://localhost:5432/mce
+
+2014-06-06 11:53:43,194 - [INFO] - from play in main 
+Application started (Prod)
+
